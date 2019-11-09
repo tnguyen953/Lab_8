@@ -17,18 +17,34 @@
       </div>
     </div>
     <script>
-      function loadData() {
-        console.log("fetch"); // confirm code is running on click
-        fetch("/api")
-          .then(res => res.json())
-          .then(res => {
-            console.log(res); // logging step to check what we got
-            return res;
-          })
-          .then(res => res.data.map(c => c.course_id))
-          .then(
-            codes => (document.querySelector(".content").innerText = codes)
-          );
+        function loadData() {
+          console.log("fetch"); // confirm code is running on click
+          fetch("/api")
+            .then(res => res.json())
+            .then(res => {
+              console.log(res); // logging step to check what we got
+              return res;
+            })
+            .then(res => {
+            const id_array = res.data.map(c => c.course_id);
+            makeListInHTML(id_array);
+            console.log(res);
+            return res
+            );
+          }
+
+        function makeListInHTML(array) {
+        const htmlTarget = document.querySelector('.content');
+        htmlTarget.innerHTML = '';
+        let el1 = document.createElement("ol");
+        el1.className = 'list';
+        htmlTarget.appendChild(el1);
+
+        for (let i = 0; i < array.length; i++) {
+          let el = document.createElement("li");
+          el.innerText = array[i];
+          htmlTarget.appendChild(el);
+        };
       }
     </script>
   </body>
